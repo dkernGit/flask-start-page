@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+        integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+        <!--<![endif]-->
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+        <style>
+        body {
+            background: url("{{ data.background }}")
+            no-repeat, linear-gradient(white, black);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        </style>
+        <title>Personalized Start Page</title>
+    </head>
+    <body>
+<div class="l-content highlight">
+    <div class="pure-g">
+     <div class="pure-u-1 pure-u-sm-1-2 pure-u-md-1-3">
+            <h1>Good {{ data["greeting"] }} {{ data['greet_name'] }}!</h1>
+            <p>
+                <iframe src="https://duckduckgo.com/search.html?prefill=Search DuckDuckGo" style="height:40px;" frameborder="0"></iframe>
+            </p>
+            Background image from @{{ data.background_u}} {{ data.background_c}}
+        </div>
+    <div class="pure-u-1 pure-u-sm-1-2 pure-u-md-1-3">
+       <div class="l-box">
+            <h2>In {{ data["weather"]["city"] }} the weather feels like: {{ data["weather"]["curr_temp"] }}<br>
+	    The forecast is {{ data["weather"]["forecast"] }}</h2>
+        <span><a href="{{ data["weather"]["station_url"] }}" target="_blank">See the NWS station data</a><br>
+	    <img src="{{ data["weather"]["icon_url"] }}" alt="weather icon">
+        </span>
+        </div>
+    </div>
+    <div class="pure-u-1 pure-u-sm-1 pure-u-md-1-3">
+        <div class="l-box">
+            <p><a href="https://sunrise-sunset.org/search?location={{ data['weather']['lat'] }}%2C{{ data['weather']['lng'] }}" target="_blank">Sunrise/Sunset Data for {{ data["weather"]["city"] }}</a><br>
+            The sun rises at {{ data["sunset"][0] }}<br>
+            The sun sets at {{ data["sunset"][1] }}</p>
+            {% if data["tides"] %}
+            <p>
+            <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id={{ data['tides_station'] }}" target="_blank">NOAA Tide Station Data</a><br>
+            {% for tide in data["tides"] %}
+            {{ tide }} ft<br>
+            {% endfor %}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="pure-u-1 pure-u-sm-1 pure-u-md-1-2">
+            <img class="center" src="{{ data["cam1"]["url"] }}" alt="{{ data["cam1"]["credit"] }}">
+            <a href="{{ data["cam1"]["source"] }}" target="_blank">{{ data["cam1"]["credit"] }}</a>
+    </div>
+    {% if data["cam2"] %}
+    <div class="pure-u-1 pure-u-sm-1 pure-u-md-1-2">
+        <img class="center" src="{{ data["cam2"]["url"] }}" alt="{{ data["cam2"]["credit"] }}">
+        <a href="{{ data["cam2"]["source"] }}" target="_blank">{{ data["cam2"]["credit"] }}</a>
+    </div>
+    {% endif %}
+</div>
+</div>
+    </body>
+</html>
